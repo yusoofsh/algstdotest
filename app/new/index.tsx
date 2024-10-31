@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { ScrollView, View } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as z from "zod"
 import { Button } from "~/lib/components/button"
 import {
@@ -28,7 +27,6 @@ const formSchema = z.object({
 })
 
 export default function NewScreen() {
-  const insets = useSafeAreaInsets()
   const scrollRef = useRef<ScrollView>(null)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,8 +53,8 @@ export default function NewScreen() {
         automaticallyAdjustContentInsets={false}
         keyboardShouldPersistTaps="handled"
       >
-        <Form {...form}>
-          <View className="web:max-w-xs w-full gap-4">
+        <View className="web:max-w-xs w-full gap-4">
+          <Form {...form}>
             <FormField
               control={form.control}
               name="title"
@@ -96,8 +94,8 @@ export default function NewScreen() {
               name="time"
               render={({ field }) => <FormSwitch {...field} label="Time" />}
             />
-          </View>
-        </Form>
+          </Form>
+        </View>
       </ScrollView>
 
       <View className="flex-row justify-between items-center gap-4 px-6 w-full">

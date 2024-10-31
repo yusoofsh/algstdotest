@@ -22,6 +22,7 @@ import {
 } from "~/lib/components/bottom-sheet"
 import { Button, buttonTextVariants } from "~/lib/components/button"
 import { Calendar } from "~/lib/components/calendar"
+import { Checkbox } from "~/lib/components/checkbox"
 import { Input } from "~/lib/components/input"
 import { Label } from "~/lib/components/label"
 import { Switch } from "~/lib/components/switch"
@@ -475,6 +476,55 @@ const FormSwitch = React.forwardRef<
 
 FormSwitch.displayName = "FormSwitch"
 
+const FormCheckbox = React.forwardRef<
+  React.ElementRef<typeof Checkbox>,
+  Omit<FormItemProps<typeof Checkbox, boolean>, "checked" | "onCheckedChange">
+>(({ label, description, value, onChange, ...props }, ref) => {
+  const {
+    error,
+    formItemNativeID,
+    formDescriptionNativeID,
+    formMessageNativeID,
+  } = useFormField()
+
+  function handleOnLabelPress() {
+    onChange?.(!value)
+  }
+
+  return (
+    <FormItem>
+      <View className="flex-row gap-3">
+        <Checkbox
+          ref={ref}
+          aria-labelledby={formItemNativeID}
+          aria-describedby={
+            !error
+              ? `${formDescriptionNativeID}`
+              : `${formDescriptionNativeID} ${formMessageNativeID}`
+          }
+          aria-invalid={!!error}
+          onChange={onChange}
+          value={value}
+          {...props}
+        />
+        {!!label && (
+          <FormLabel
+            className="pt-0.5"
+            nativeID={formItemNativeID}
+            onPress={handleOnLabelPress}
+          >
+            {label}
+          </FormLabel>
+        )}
+      </View>
+      {!!description && <FormDescription>{description}</FormDescription>}
+      <FormMessage />
+    </FormItem>
+  )
+})
+
+FormCheckbox.displayName = "FormCheckbox"
+
 export {
   Form,
   FormDatePicker,
@@ -484,7 +534,8 @@ export {
   FormItem,
   FormLabel,
   FormMessage,
-  FormSwitch,
   FormTextarea,
+  FormSwitch,
+  FormCheckbox,
   useFormField,
 }

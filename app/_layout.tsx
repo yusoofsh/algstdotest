@@ -5,10 +5,7 @@ import { Link, Stack, useRouter } from "expo-router"
 import { StatusBar } from "expo-status-bar"
 import { View } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 import { Button } from "~/lib/components/button"
 import { Text } from "~/lib/components/text"
 import { LIGHT_THEME } from "~/lib/constants"
@@ -19,7 +16,6 @@ export { ErrorBoundary } from "expo-router"
 
 export default function RootLayout() {
   const router = useRouter()
-  const insets = useSafeAreaInsets()
 
   return (
     <GestureHandlerRootView className="flex-1">
@@ -44,6 +40,7 @@ export default function RootLayout() {
                     <Link href="/new" asChild>
                       <Button
                         variant="default"
+                        size="sm"
                         className="text-background flex-row"
                       >
                         <Plus className="text-background" size={18} />
