@@ -1,14 +1,6 @@
-import { SectionList, View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { Button } from "~/lib/components/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/lib/components/card"
+import { SectionList } from "react-native"
+import { Card, CardContent } from "~/lib/components/card"
+import { Parent } from "~/lib/components/parent"
 import { Text } from "~/lib/components/text"
 
 const DATA = [
@@ -96,11 +88,11 @@ const DATA = [
 
 export default function Index() {
   return (
-    <SafeAreaView>
+    <Parent>
       <SectionList
+        contentContainerClassName="px-6"
         sections={DATA}
         stickySectionHeadersEnabled={true}
-        // contentContainerClassName="p-6 mx-auto w-full max-w-xl"
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => (
           <Card className="w-full max-w-sm">
@@ -111,6 +103,6 @@ export default function Index() {
         )}
         renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
       />
-    </SafeAreaView>
+    </Parent>
   )
 }

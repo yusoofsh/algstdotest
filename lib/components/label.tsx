@@ -8,7 +8,7 @@ const Label = React.forwardRef<
 >(
   (
     { className, onPress, onLongPress, onPressIn, onPressOut, ...props },
-    ref
+    ref,
   ) => (
     <LabelPrimitive.Root
       className="web:cursor-default"
@@ -21,12 +21,12 @@ const Label = React.forwardRef<
         ref={ref}
         className={cn(
           "text-sm text-foreground native:text-base font-medium leading-none web:peer-disabled:cursor-not-allowed web:peer-disabled:opacity-70",
-          className
+          className,
         )}
         {...props}
       />
     </LabelPrimitive.Root>
-  )
+  ),
 )
 Label.displayName = LabelPrimitive.Root.displayName
 

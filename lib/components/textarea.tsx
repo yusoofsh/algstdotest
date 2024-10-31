@@ -14,7 +14,7 @@ const Textarea = React.forwardRef<
       placeholderClassName,
       ...props
     },
-    ref
+    ref,
   ) => {
     return (
       <TextInput
@@ -22,7 +22,7 @@ const Textarea = React.forwardRef<
         className={cn(
           "web:flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground web:ring-offset-background web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2",
           props.editable === false && "opacity-50 web:cursor-not-allowed",
-          className
+          className,
         )}
         placeholderClassName={cn("text-muted-foreground", placeholderClassName)}
         multiline={multiline}
@@ -31,7 +31,7 @@ const Textarea = React.forwardRef<
         {...props}
       />
     )
-  }
+  },
 )
 
 Textarea.displayName = "Textarea"

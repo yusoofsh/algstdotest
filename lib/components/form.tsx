@@ -5,24 +5,23 @@
 import * as React from "react"
 import {
   Controller,
-  ControllerProps,
-  FieldPath,
-  FieldValues,
+  type ControllerProps,
+  type FieldPath,
+  type FieldValues,
   FormProvider,
-  Noop,
+  type Noop,
   useFormContext,
 } from "react-hook-form"
 import { View } from "react-native"
 import Animated, { FadeInDown, FadeOut } from "react-native-reanimated"
 import {
   BottomSheet,
-  BottomSheetCloseTrigger,
   BottomSheetContent,
   BottomSheetOpenTrigger,
   BottomSheetView,
 } from "~/lib/components/bottom-sheet"
-import { Calendar } from "~/lib/components/calendar"
 import { Button, buttonTextVariants } from "~/lib/components/button"
+import { Calendar } from "~/lib/components/calendar"
 import { Input } from "~/lib/components/input"
 import { Label } from "~/lib/components/label"
 import { Switch } from "~/lib/components/switch"
@@ -36,18 +35,18 @@ const Form = FormProvider
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName
 }
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
+  {} as FormFieldContextValue,
 )
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -87,7 +86,7 @@ type FormItemContextValue = {
 }
 
 const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
+  {} as FormItemContextValue,
 )
 
 const FormItem = React.forwardRef<
@@ -118,7 +117,7 @@ const FormLabel = React.forwardRef<
       className={cn(
         "pb-1 native:pb-2 px-px",
         error && "text-destructive",
-        className
+        className,
       )}
       nativeID={formItemNativeID}
       {...props}
@@ -180,7 +179,7 @@ interface FormFieldFieldProps<T> {
   disabled?: boolean
 }
 
-type FormItemProps<T extends React.ElementType<any>, U> = Override<
+type FormItemProps<T extends React.ElementType, U> = Override<
   React.ComponentPropsWithoutRef<T>,
   FormFieldFieldProps<U>
 > & {
@@ -208,7 +207,7 @@ const FormInput = React.forwardRef<
       }
       return inputRef.current
     },
-    [inputRef.current]
+    [],
   )
 
   function handleOnLabelPress() {
@@ -270,7 +269,7 @@ const FormTextarea = React.forwardRef<
       }
       return textareaRef.current
     },
-    [textareaRef.current]
+    [],
   )
 
   function handleOnLabelPress() {
@@ -347,7 +346,7 @@ const FormDatePicker = React.forwardRef<
                     variant: "outline",
                     className: cn(
                       !value && "opacity-80",
-                      pressed && "opacity-60"
+                      pressed && "opacity-60",
                     ),
                   })}
                   size={18}
@@ -358,7 +357,7 @@ const FormDatePicker = React.forwardRef<
                     className: cn(
                       "font-normal",
                       !value && "opacity-70",
-                      pressed && "opacity-50"
+                      pressed && "opacity-50",
                     ),
                   })}
                 >
@@ -391,15 +390,18 @@ const FormDatePicker = React.forwardRef<
                   selected: true,
                 },
               }}
-              current={value} // opens calendar on selected date
+              current={value}
               {...props}
             />
-            <View className={"pb-2 pt-4"}>
-              <BottomSheetCloseTrigger asChild>
-                <Button>
-                  <Text>Close</Text>
-                </Button>
-              </BottomSheetCloseTrigger>
+            <View className="flex-row justify-between items-center gap-4 w-full">
+              {/* <BottomSheetCloseTrigger asChild> */}
+              <Button variant="outline" className="flex-1">
+                <Text>Cancel</Text>
+              </Button>
+              <Button className="flex-1">
+                <Text>Save</Text>
+              </Button>
+              {/* </BottomSheetCloseTrigger> */}
             </View>
           </BottomSheetView>
         </BottomSheetContent>
@@ -432,7 +434,7 @@ const FormSwitch = React.forwardRef<
       }
       return switchRef.current
     },
-    [switchRef.current]
+    [],
   )
 
   function handleOnLabelPress() {
