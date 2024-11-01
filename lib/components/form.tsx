@@ -2,6 +2,7 @@
 // The code is licensed under the MIT License.
 // https://github.com/shadcn-ui/ui
 
+import { Picker } from "@react-native-picker/picker"
 import * as React from "react"
 import {
   Controller,
@@ -12,10 +13,11 @@ import {
   type Noop,
   useFormContext,
 } from "react-hook-form"
-import { View } from "react-native"
+import { Pressable, View } from "react-native"
 import Animated, { FadeInDown, FadeOut } from "react-native-reanimated"
 import {
   BottomSheet,
+  BottomSheetCloseTrigger,
   BottomSheetContent,
   BottomSheetOpenTrigger,
   BottomSheetView,
@@ -362,7 +364,7 @@ const FormDatePicker = React.forwardRef<
                     ),
                   })}
                 >
-                  {value ? value : "Pick a date"}
+                  {value ? value : "Select Date"}
                 </Text>
                 {!!value && (
                   <Button
@@ -381,6 +383,7 @@ const FormDatePicker = React.forwardRef<
         </BottomSheetOpenTrigger>
         <BottomSheetContent>
           <BottomSheetView hadHeader={false} className="pt-2">
+            <Text className="text-2xl font-semibold mb-4 ml-6">Set Date</Text>
             <Calendar
               style={{ height: 358 }}
               onDayPress={(day) => {
@@ -395,14 +398,16 @@ const FormDatePicker = React.forwardRef<
               {...props}
             />
             <View className="flex-row justify-between items-center gap-4 w-full">
-              {/* <BottomSheetCloseTrigger asChild> */}
-              <Button variant="outline" className="flex-1">
-                <Text>Cancel</Text>
-              </Button>
-              <Button className="flex-1">
-                <Text>Save</Text>
-              </Button>
-              {/* </BottomSheetCloseTrigger> */}
+              <BottomSheetCloseTrigger asChild onPress={() => onChange?.("")}>
+                <Button variant="outline" className="flex-1">
+                  <Text>Cancel</Text>
+                </Button>
+              </BottomSheetCloseTrigger>
+              <BottomSheetCloseTrigger asChild disabled={!value}>
+                <Button className="flex-1">
+                  <Text>Save</Text>
+                </Button>
+              </BottomSheetCloseTrigger>
             </View>
           </BottomSheetView>
         </BottomSheetContent>
@@ -414,6 +419,103 @@ const FormDatePicker = React.forwardRef<
 })
 
 FormDatePicker.displayName = "FormDatePicker"
+
+const FormTimePicker = React.forwardRef<
+  React.ElementRef<typeof Button>,
+  FormItemProps<typeof Picker, string>
+>(({ label, description, value, onChange, children }, ref) => {
+  const {
+    error,
+    formItemNativeID,
+    formDescriptionNativeID,
+    formMessageNativeID,
+  } = useFormField()
+
+  const [selectedHour, setSelectedHour] = React.useState(
+    value ? value.split(":")[0] : "09",
+  )
+
+  const [selectedMinute, setSelectedMinute] = React.useState(
+    value ? value.split(":")[1] : "00",
+  )
+
+  const hours = Array.from({ length: 24 }, (_, i) =>
+    i < 10 ? `0${i}` : `${i}`,
+  )
+
+  const minutes = Array.from({ length: 60 }, (_, i) =>
+    i < 10 ? `0${i}` : `${i}`,
+  )
+
+  const handleSave = () => {
+    const timeValue = `${selectedHour}:${selectedMinute}`
+    onChange?.(timeValue)
+  }
+
+  return (
+    <FormItem>
+      {!!label && <FormLabel nativeID={formItemNativeID}>{label}</FormLabel>}
+      <BottomSheet>
+        <BottomSheetOpenTrigger asChild>
+          <Pressable
+            ref={ref}
+            aria-labelledby={formItemNativeID}
+            aria-describedby={
+              !error
+                ? `${formDescriptionNativeID}`
+                : `${formDescriptionNativeID} ${formMessageNativeID}`
+            }
+            aria-invalid={!!error}
+          >
+            {children}
+          </Pressable>
+        </BottomSheetOpenTrigger>
+        <BottomSheetContent>
+          <BottomSheetView hadHeader={false} className="pt-2">
+            <Text className="text-2xl font-semibold mb-4 ml-6">Set Time</Text>
+            <View className="flex-row items-center justify-center">
+              <Picker
+                selectedValue={selectedHour}
+                style={{ width: 100 }}
+                onValueChange={(itemValue) => setSelectedHour(itemValue)}
+              >
+                {hours.map((hour) => (
+                  <Picker.Item key={hour} label={hour} value={hour} />
+                ))}
+              </Picker>
+              <Text className="font-bold">:</Text>
+              <Picker
+                selectedValue={selectedMinute}
+                style={{ width: 100 }}
+                onValueChange={(itemValue) => setSelectedMinute(itemValue)}
+              >
+                {minutes.map((minute) => (
+                  <Picker.Item key={minute} label={minute} value={minute} />
+                ))}
+              </Picker>
+            </View>
+            <View className="flex-row justify-between items-center gap-4 w-full mt-4">
+              <BottomSheetCloseTrigger asChild onPress={() => onChange?.("")}>
+                <Button variant="outline" className="flex-1">
+                  <Text>Cancel</Text>
+                </Button>
+              </BottomSheetCloseTrigger>
+              <BottomSheetCloseTrigger asChild>
+                <Button className="flex-1" onPress={handleSave}>
+                  <Text>Save</Text>
+                </Button>
+              </BottomSheetCloseTrigger>
+            </View>
+          </BottomSheetView>
+        </BottomSheetContent>
+      </BottomSheet>
+      {!!description && <FormDescription>{description}</FormDescription>}
+      <FormMessage />
+    </FormItem>
+  )
+})
+
+FormTimePicker.displayName = "FormTimePicker"
 
 const FormSwitch = React.forwardRef<
   React.ElementRef<typeof Switch>,
@@ -528,6 +630,7 @@ FormCheckbox.displayName = "FormCheckbox"
 export {
   Form,
   FormDatePicker,
+  FormTimePicker,
   FormDescription,
   FormField,
   FormInput,

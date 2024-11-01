@@ -22,10 +22,8 @@ export function iconWithClassName(icon: LucideIcon) {
   })
 }
 
-export async function setAndroidNavigationBar(theme: "light" | "dark") {
+export async function setAndroidNavigationBar() {
   if (Platform.OS !== "android") return
-  await NavigationBar.setButtonStyleAsync(theme === "dark" ? "light" : "dark")
-  await NavigationBar.setBackgroundColorAsync(
-    theme === "dark" ? NAV_THEME.dark.background : NAV_THEME.light.background,
-  )
+  await NavigationBar.setButtonStyleAsync("light")
+  await NavigationBar.setBackgroundColorAsync(NAV_THEME.light.background)
 }

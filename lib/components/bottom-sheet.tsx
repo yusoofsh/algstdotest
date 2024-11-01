@@ -24,7 +24,6 @@ import {
 } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Button } from "~/lib/components/button"
-import { useColorScheme } from "~/lib/hooks"
 import { X } from "~/lib/icons/x"
 import { cn } from "../../lib/utils"
 
@@ -92,7 +91,6 @@ const BottomSheetContent = React.forwardRef<
     ref,
   ) => {
     const insets = useSafeAreaInsets()
-    const { isDarkColorScheme } = useColorScheme()
     const { colors } = useTheme()
     const { sheetRef } = useBottomSheetContext()
 
@@ -111,7 +109,7 @@ const BottomSheetContent = React.forwardRef<
       (props: BottomSheetBackdropProps) => {
         const {
           pressBehavior = "close",
-          opacity = isDarkColorScheme ? 0.3 : 0.7,
+          opacity = 0.7,
           disappearsOnIndex = CLOSED_INDEX,
           style,
           onPress,
@@ -136,7 +134,7 @@ const BottomSheetContent = React.forwardRef<
           />
         )
       },
-      [backdropProps, isDarkColorScheme],
+      [backdropProps],
     )
 
     return (

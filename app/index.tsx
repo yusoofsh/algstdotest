@@ -112,18 +112,16 @@ export default function Index() {
             const fieldName = `section-${section.index}-item-${index}`
             return (
               <Card
-                className={`flex content-center p-4 mx-8 ${index === 0 && "mt-2"} ${index === section.data.length - 1 && "mb-2"}`}
+                className={`mx-8 ${index === 0 && "mt-2"} ${index === section.data.length - 1 && "mb-2"}`}
               >
                 <CardContent>
-                  <View className="flex-col">
+                  <View className="flex-row items-center">
                     <FormField
                       control={form.control}
                       name={`fields.${fieldName}`}
-                      render={({ field }) => (
-                        <FormCheckbox label={item} {...field} />
-                      )}
+                      render={({ field }) => <FormCheckbox {...field} />}
                     />
-                    <View className="flex-row">
+                    <View className="flex-col">
                       <Text>asaaaa</Text>
                       <Text>asa</Text>
                     </View>

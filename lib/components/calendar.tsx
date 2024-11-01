@@ -13,13 +13,13 @@ function Calendar({
   theme,
   ...props
 }: React.ComponentProps<typeof RNCalendar>) {
-  const { colorScheme, isDarkColorScheme } = useColorScheme()
+  const { colorScheme } = useColorScheme()
   const id = React.useId()
 
   return (
     <RNCalendar
       key={`${id}-${colorScheme}`}
-      theme={getTheme(isDarkColorScheme, theme)}
+      theme={getTheme(theme)}
       {...props}
     />
   )
@@ -29,25 +29,8 @@ const SKY_500 = "#0ea5e9"
 const SKY_600 = "#0284c7"
 
 function getTheme(
-  isThemeDark: boolean,
   customTheme?: React.ComponentProps<typeof RNCalendar>["theme"],
 ): React.ComponentProps<typeof RNCalendar>["theme"] {
-  if (isThemeDark) {
-    return {
-      backgroundColor: NAV_THEME.dark.background,
-      calendarBackground: NAV_THEME.dark.card,
-      textSectionTitleColor: NAV_THEME.dark.text,
-      selectedDayBackgroundColor: SKY_500,
-      selectedDayTextColor: "#000000",
-      todayTextColor: SKY_500,
-      dayTextColor: NAV_THEME.dark.text,
-      textDisabledColor: "#ffffff30",
-      monthTextColor: NAV_THEME.dark.text,
-      textMonthFontWeight: "500",
-      arrowColor: SKY_500,
-      ...customTheme,
-    }
-  }
   return {
     backgroundColor: NAV_THEME.light.background,
     calendarBackground: NAV_THEME.light.card,
