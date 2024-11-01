@@ -1,4 +1,6 @@
 import { useColorScheme as useNativewindColorScheme } from "nativewind"
+import { create } from "zustand"
+import { type StoreState, taskSchema } from "~/lib/schemas"
 
 export function useColorScheme() {
   const { colorScheme, setColorScheme, toggleColorScheme } =
@@ -9,3 +11,9 @@ export function useColorScheme() {
     toggleColorScheme,
   }
 }
+
+export const useTasksStore = create<StoreState>((set) => ({
+  tasks: [],
+  addTask: (task) =>
+    set((state) => ({ tasks: [...state.tasks, taskSchema.parse(task)] })),
+}))

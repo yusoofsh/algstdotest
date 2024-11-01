@@ -3,7 +3,6 @@ import { useRouter } from "expo-router"
 import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { ScrollView, View } from "react-native"
-import * as z from "zod"
 import { Button } from "~/lib/components/button"
 import {
   Form,
@@ -16,37 +15,29 @@ import {
 } from "~/lib/components/form"
 import { Parent } from "~/lib/components/parent"
 import { Text } from "~/lib/components/text"
+import { useTasksStore } from "~/lib/hooks"
 import { Timer } from "~/lib/icons/timer"
-
-const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Please enter a title.",
-  }),
-  description: z.string(),
-  date: z.string().min(1, {
-    message: "Please enter a date.",
-  }),
-  time: z.object({ enabled: z.boolean(), value: z.string() }),
-})
+import { type Task, taskSchema } from "~/lib/schemas"
 
 export default function NewScreen() {
   const router = useRouter()
   const scrollRef = useRef<ScrollView>(null)
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { title: "", description: "", date: "", time: {} },
+  const { addTask } = useTasksStore((state) => state)
+  const form = useForm<Task>({
+    resolver: zodResolver(taskSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      date: "",
+      time: { enabled: false, value: "" },
+    },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(JSON.stringify(values, null, 2), [
-      {
-        text: "OK",
-        onPress: () => {
-          scrollRef.current?.scrollTo({ y: 0 })
-          form.reset()
-        },
-      },
-    ])
+  function onSubmit(values: Task) {
+    addTask(values)
+    form.reset()
+    scrollRef.current?.scrollTo({ y: 0 })
+    router.back()
   }
 
   return (

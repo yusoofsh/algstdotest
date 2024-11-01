@@ -178,7 +178,7 @@ interface FormFieldFieldProps<T> {
   name: string
   onBlur: Noop
   onChange: (val: T) => void
-  value: T
+  value?: T
   disabled?: boolean
 }
 
@@ -557,7 +557,7 @@ const FormSwitch = React.forwardRef<
           }
           aria-invalid={!!error}
           onCheckedChange={onChange}
-          checked={value}
+          checked={!!value}
           {...props}
         />
         {!!label && (
@@ -606,7 +606,7 @@ const FormCheckbox = React.forwardRef<
           }
           aria-invalid={!!error}
           onChange={onChange}
-          value={value}
+          value={!!value}
           {...props}
         />
         {!!label && (

@@ -5,6 +5,7 @@ import { cssInterop } from "nativewind"
 import { Platform } from "react-native"
 import { twMerge } from "tailwind-merge"
 import { NAV_THEME } from "~/lib/constants"
+import type { SectionData, Task } from "~/lib/schemas"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -26,4 +27,22 @@ export async function setAndroidNavigationBar() {
   if (Platform.OS !== "android") return
   await NavigationBar.setButtonStyleAsync("light")
   await NavigationBar.setBackgroundColorAsync(NAV_THEME.light.background)
+}
+
+export function groupTasksByDate(tasks: Task[]): SectionData[] {
+  const groupedTasks: Record<string, Task[]> = {}
+
+  for (const task of tasks) {
+    const { date } = task
+    if (!groupedTasks[date]) {
+      groupedTasks[date] = []
+    }
+    groupedTasks[date].push(task) // Add the full task object
+  }
+
+  // Convert the map to the required structure
+  return Object.keys(groupedTasks).map((date) => ({
+    title: date, // Use date as the section title
+    data: groupedTasks[date], // 'data' property for SectionList
+  }))
 }
