@@ -34,6 +34,7 @@ export function groupTasksByDate(tasks: Task[]): SectionData[] {
 
   for (const task of tasks) {
     const { date } = task
+
     if (!groupedTasks[date]) {
       groupedTasks[date] = []
     }
@@ -42,7 +43,11 @@ export function groupTasksByDate(tasks: Task[]): SectionData[] {
 
   // Convert the map to the required structure
   return Object.keys(groupedTasks).map((date) => ({
-    title: date, // Use date as the section title
-    data: groupedTasks[date], // 'data' property for SectionList
+    title: new Intl.DateTimeFormat("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date(date)),
+    data: groupedTasks[date],
   }))
 }

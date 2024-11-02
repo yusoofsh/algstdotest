@@ -14,6 +14,7 @@ export function useColorScheme() {
 
 export const useTasksStore = create<StoreState>((set) => ({
   tasks: [],
+  selectedTasks: [],
   addTask: (task) =>
     set((state) => ({ tasks: [...state.tasks, taskSchema.parse(task)] })),
 }))

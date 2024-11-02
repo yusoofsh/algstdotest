@@ -14,6 +14,7 @@ export type Task = z.infer<typeof taskSchema>
 
 export interface StoreState {
   tasks: Task[]
+  selectedTasks: Task[]
   addTask: (task: Task) => void
 }
 
